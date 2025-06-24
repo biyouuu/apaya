@@ -1,0 +1,331 @@
+<!-- Mulai HTML kamu -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Apaan Nihhhhh</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Fredoka One', cursive;
+    }
+    body, html {
+      width: 100%; height: 100%; overflow: hidden;
+      background: linear-gradient(145deg, #ffe4ec, #ffe6fa);
+    }
+    .page {
+      position: absolute;
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; text-align: center;
+      padding: 30px;
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    .hidden { opacity: 0; pointer-events: none; }
+    .fade { opacity: 0; }
+    .slide { transform: translateX(100%); }
+    .crack { animation: crack 1s forwards; }
+
+    h1, h2, p {
+      color: #ff4d88;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 12px 25px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 20px;
+      background: #ffb6c1;
+      font-size: 18px;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.3s, background 0.3s;
+      box-shadow: 0 4px 10px rgba(255, 0, 102, 0.2);
+    }
+    button:hover {
+      transform: scale(1.1);
+      background: #ff69b4;
+    }
+
+    .suram {
+      background: #1a1a1a !important;
+      color: #bbb !important;
+    }
+
+    .emoji {
+      font-size: 40px;
+      margin: 10px 0;
+      animation: pop 1s ease-in-out infinite alternate;
+    }
+    @keyframes pop {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.2); }
+    }
+
+    .envelope {
+      width: 200px;
+      height: auto;
+      cursor: pointer;
+      transition: transform 0.4s;
+    }
+    .envelope:hover {
+      transform: scale(1.1);
+    }
+
+    canvas {
+      border: 2px solid #ffb6c1;
+      background: #fff0f5;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    #drawBoard {
+      background: white;
+      border: 2px solid #ff69b4;
+      border-radius: 10px;
+      touch-action: none;
+    }
+
+    .love {
+      position: absolute;
+      font-size: 20px;
+      animation: floatUp 1s ease-out forwards;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-50px); opacity: 0; }
+    }
+
+    .star {
+      position: absolute;
+      color: #fff;
+      font-size: 16px;
+      animation: floatStar 3s linear infinite;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    @keyframes floatStar {
+      0% { transform: translateY(0); opacity: 0.8; }
+      100% { transform: translateY(-100vh); opacity: 0; }
+    }
+  </style>
+</head>
+<body onclick="createLove(event.pageX, event.pageY)">
+  <audio id="bgMusic" loop>
+    <source src="https://files.catbox.moe/kgkea3.mp3" type="audio/mp3">
+  </audio>
+  <audio id="meowSound">
+    <source src="https://files.catbox.moe/kwefcb.mp3" type="audio/mp3">
+  </audio>
+
+  <div id="page1" class="page">
+    <div class="emoji">👋👋👋</div>
+    <h1>Hallooww kamu yang disanaaa!</h1>
+    <button onclick="startMusicAndGo()">🙌🏻 Klick Disini 🙌🏻</button>
+  </div>
+
+  <div id="page2" class="page hidden">
+    <h2>Apakah kamu Janetta Naura Sabarudin? 😼😸😺</h2>
+    <button onclick="toPage('pageGame', 'fade')">Iya 🙋🏻‍♀</button>
+    <button onclick="toPage('page7', 'crack')">Nggak 🙅🏻‍♀</button>
+  </div>
+
+  <div id="pageGame" class="page hidden">
+    <h2>Mini Game Spesial Buat Kamu 😽</h2>
+    <p>Yuk tangkap kucingnya sampai dapat 30! 🎯</p>
+    <h2>Score: <span id="score">0</span>/30</h2>
+    <canvas id="gameCanvas" width="300" height="300"></canvas>
+    <div id="openLetter" class="hidden">
+      <p>Yay kamu dapet hadiah 🎁</p>
+      <p>Klik amplop di bawah ini yaa~</p>
+      <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png" class="envelope" onclick="toPage('page3', 'fade')" alt="Envelope">
+    </div>
+  </div>
+
+  <div id="page3" class="page hidden">
+    <p>Nett... maaf lancang 🙈<br>aku suka kamu 💘</p>
+    <button style="align-self: flex-end; margin-right: 30px;" onclick="toPage('page4', 'slide')">Next 👉</button>
+  </div>
+
+  <div id="page4" class="page hidden">
+    <p>Yaaa karena kamu itu cantik, lucu, <br>
+    baik, ceria, selalu bisa bikin aku senyum <br>
+    dari tingkah kamu maupun cuma lewat obrolan kecil, masih banyak lagi deh<br>
+    kamu tuh kayak matahari  hangat banget,<br>
+    tapi nggak maksa buat nyinarin orang <br>
+    dan aku seneng bisa kena sinarnya </p>
+    <button style="align-self: flex-end; margin-right: 30px;" onclick="toPage('page5', 'slide')">Next 👉</button>
+  </div>
+
+  <div id="page5" class="page hidden">
+    <p>Kalau dibilang suka sih iyalah bahkan lebih dari suka <br>
+    Aku nggak berharap apa-apa, cuma mau kamu tahu aja.<br>
+    Maaf confess lewat web <br>
+    Kalau ngetik langsung bingung soalnya...<br>
+    ketemu langsung juga ga ada waktu yang pas </p>
+    <button style="align-self: flex-end; margin-right: 30px;" onclick="toPage('page6', 'slide')">Next 👉</button>
+  </div>
+
+  <div id="page6" class="page hidden">
+    <h1>Terimakasihhhhhh </h1>
+    <div class="emoji">💐💐💐</div>
+    <button style="margin-top: 20px;" onclick="toPage('page8', 'fade')">🎉 Fun Time 🎉</button>
+  </div>
+
+  <div id="page7" class="page hidden suram">
+    <h1>Maaf... 🥀</h1>
+    <p>Bukan kamu orangnya...</p>
+  </div>
+
+  <div id="page8" class="page hidden">
+    <h2>Yuk Coret-Coret Sesuka Hati! 🎨</h2>
+    <canvas id="drawBoard" width="300" height="300"></canvas>
+    <button onclick="clearBoard()">🧼 Bersihkan</button>
+  </div>
+
+  <script>
+    let current = 'page1';
+    function toPage(target, effect) {
+      const currentPage = document.getElementById(current);
+      const nextPage = document.getElementById(target);
+
+      if (effect === 'fade') currentPage.classList.add('fade');
+      else if (effect === 'slide') nextPage.classList.add('slide');
+      else if (effect === 'crack') currentPage.classList.add('crack');
+
+      setTimeout(() => {
+        currentPage.classList.add('hidden');
+        currentPage.classList.remove('fade', 'slide', 'crack');
+        nextPage.classList.remove('hidden', 'fade', 'slide', 'crack');
+        current = target;
+
+        if (target === 'pageGame') startGame();
+        if (target === 'page8') enableDrawing();
+      }, 1000);
+    }
+
+    function startMusicAndGo() {
+      document.getElementById('bgMusic').play();
+      toPage('page2', 'fade');
+    }
+
+    let score = 0;
+    let cat = { x: 150, y: 150, size: 30 };
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const meowSound = document.getElementById('meowSound');
+
+    function startGame() {
+      score = 0;
+      document.getElementById('score').innerText = score;
+      drawCat();
+    }
+
+    canvas.addEventListener('click', function(e) {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const dx = x - cat.x;
+      const dy = y - cat.y;
+      if (dx * dx + dy * dy <= cat.size * cat.size) {
+        meowSound.currentTime = 0;
+        meowSound.play();
+        score++;
+        document.getElementById('score').innerText = score;
+        cat.x = Math.random() * (canvas.width - 60) + 30;
+        cat.y = Math.random() * (canvas.height - 60) + 30;
+        drawCat();
+        if (score >= 30) document.getElementById('openLetter').classList.remove('hidden');
+      }
+    });
+
+    function drawCat() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.font = '30px serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🐱', cat.x, cat.y);
+    }
+
+    function createLove(x, y) {
+      const love = document.createElement('div');
+      love.className = 'love';
+      love.style.left = `${x}px`;
+      love.style.top = `${y}px`;
+      love.innerText = '💖';
+      document.body.appendChild(love);
+      setTimeout(() => love.remove(), 1000);
+    }
+
+    setInterval(() => {
+      if (!document.getElementById(current).classList.contains('suram')) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.innerText = '⭐';
+        star.style.left = `${Math.random() * window.innerWidth}px`;
+        star.style.top = `${window.innerHeight}px`;
+        document.body.appendChild(star);
+        setTimeout(() => star.remove(), 3000);
+      }
+    }, 800);
+
+    const drawBoard = document.getElementById('drawBoard');
+    const drawCtx = drawBoard.getContext('2d');
+    let drawing = false;
+
+    function enableDrawing() {
+      drawBoard.addEventListener('mousedown', startDraw);
+      drawBoard.addEventListener('mousemove', draw);
+      drawBoard.addEventListener('mouseup', endDraw);
+      drawBoard.addEventListener('mouseleave', endDraw);
+
+      drawBoard.addEventListener('touchstart', (e) => {
+        const touch = e.touches[0];
+        const rect = drawBoard.getBoundingClientRect();
+        startDraw({ offsetX: touch.clientX - rect.left, offsetY: touch.clientY - rect.top });
+        e.preventDefault();
+      }, { passive: false });
+
+      drawBoard.addEventListener('touchmove', (e) => {
+        if (!drawing) return;
+        const touch = e.touches[0];
+        const rect = drawBoard.getBoundingClientRect();
+        draw({ offsetX: touch.clientX - rect.left, offsetY: touch.clientY - rect.top });
+        e.preventDefault();
+      }, { passive: false });
+
+      drawBoard.addEventListener('touchend', () => endDraw());
+    }
+
+    function startDraw(e) {
+      drawing = true;
+      drawCtx.beginPath();
+      drawCtx.moveTo(e.offsetX, e.offsetY);
+    }
+
+    function draw(e) {
+      if (!drawing) return;
+      drawCtx.lineTo(e.offsetX, e.offsetY);
+      drawCtx.strokeStyle = "#ff4d88";
+      drawCtx.lineWidth = 3;
+      drawCtx.lineCap = "round";
+      drawCtx.stroke();
+    }
+
+    function endDraw() {
+      drawing = false;
+    }
+
+    function clearBoard() {
+      drawCtx.clearRect(0, 0, drawBoard.width, drawBoard.height);
+    }
+  </script>
+</body>
+</html>
